@@ -24,23 +24,14 @@ public class Pathfinding : MonoBehaviour
         Node startNode = gridForPathFinding.NodeFromWorldPosition(startPos);
         Node targetNode = gridForPathFinding.NodeFromWorldPosition(targetPos);
 
-        List<Node> openSet = new List<Node>();
+        Heap<Node> openSet = new Heap<Node>(gridForPathFinding.gridSize);
         HashSet<Node> closedSet = new HashSet<Node>();
         
         openSet.Add(startNode);
 
         while (openSet.Count > 0)
         {
-            Node currentNode = openSet[0];
-            for (int i = 1; i < openSet.Count; i++)
-            {
-                if (currentNode.fCost >= openSet[i].fCost && currentNode.hCost > openSet[i].hCost)
-                {
-                    currentNode = openSet[i];
-                }
-            }
-            
-            openSet.Remove(currentNode);
+            Node currentNode = openSet.RemoveFirstItem();
             closedSet.Add(currentNode);
 
             if (currentNode == targetNode)

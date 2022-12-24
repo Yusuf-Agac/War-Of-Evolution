@@ -16,6 +16,8 @@ public class GridForPathFinding : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
+    public int gridSize => gridSizeX * gridSizeY;
+
     private void Start()
     {
         nodeDiameter = nodeRadius * 2;
