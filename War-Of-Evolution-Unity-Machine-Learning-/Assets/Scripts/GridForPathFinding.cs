@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class GridForPathFinding : MonoBehaviour
 {  
     public LayerMask unwalkableMask;
+    public bool displayGrid;
     public Vector2 gridWorldSize;
     public float nodeRadius;
     [Range(0.1f, 0.9f)]
@@ -18,7 +19,7 @@ public class GridForPathFinding : MonoBehaviour
 
     public int gridSize => gridSizeX * gridSizeY;
 
-    private void Start()
+    private void Awake()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -78,17 +79,15 @@ public class GridForPathFinding : MonoBehaviour
         return neighbours;
     }
 
-    public List<Node> path = new List<Node>();
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 0, gridWorldSize.y));
-        if (grid != null)
+        if (grid != null && displayGrid)
         {
             foreach (Node node in grid)
             {
                 Gizmos.color = (node.walkable) ? Color.white : Color.red;
                 Gizmos.color = (!node.isEmpty) ? Color.blue : Gizmos.color;
-                if(path != null && path.Contains(node)){Gizmos.color = Color.black;}
                 Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - debugCubeSpaceSize));
             }
         }
