@@ -45,7 +45,7 @@ public class Heap<T> where T : Heap<T>.IHeapItem<T>
         }
     }
 
-    private void UpdateItem(T item)
+    public void UpdateItem(T item)
     {
         SortUp(item);
     }

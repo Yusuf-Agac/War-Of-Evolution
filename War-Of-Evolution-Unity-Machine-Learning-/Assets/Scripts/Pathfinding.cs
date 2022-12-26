@@ -52,7 +52,7 @@ public class Pathfinding : MonoBehaviour
                         continue;
                     }
 
-                    float CostOfGoingToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbourNode);
+                    float CostOfGoingToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbourNode) + neighbourNode.penalty;
                     if (CostOfGoingToNeighbour < currentNode.gCost || !openSet.Contains(neighbourNode))
                     {
                         neighbourNode.gCost = CostOfGoingToNeighbour;
@@ -61,6 +61,10 @@ public class Pathfinding : MonoBehaviour
                         if (!openSet.Contains(neighbourNode))
                         {
                             openSet.Add(neighbourNode);
+                        }
+                        else
+                        {
+                            openSet.UpdateItem(neighbourNode);
                         }
                     }
                 }

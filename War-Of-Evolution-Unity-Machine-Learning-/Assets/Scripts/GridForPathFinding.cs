@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class GridForPathFinding : MonoBehaviour
-{  
+{
+    public TerrainType[] walkableRegions;
     public LayerMask unwalkableMask;
+    LayerMask walkableMask;
+    public Dictionary<float, float> walkableRegionDictionary = new Dictionary<float, float>();
     public bool displayGrid;
+    
     public Vector2 gridWorldSize;
     public float nodeRadius;
     [Range(0.1f, 0.9f)]
@@ -24,6 +29,14 @@ public class GridForPathFinding : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+
+        foreach (var region in walkableRegions)
+        {
+            //Bitwise Operation
+            walkableMask.value |= region.terrainLayerMask.value;
+            walkableRegionDictionary.Add(Mathf.Log(region.terrainLayerMask.value, 2), region.terrainPenalty);
+        }
+        
         CreateGrid();
     }
     
@@ -39,7 +52,17 @@ public class GridForPathFinding : MonoBehaviour
             {
                 Vector3 worldPoint = gridsLeftUpPoint + new Vector3(x * nodeDiameter + nodeRadius, 0, y * nodeDiameter + nodeRadius);
                 bool walkable = !Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask);
-                grid[x, y] = new Node(worldPoint, walkable, x, y);
+
+                float penalty = 0;
+
+                Ray ray = new Ray(worldPoint + Vector3.up * 50, Vector3.down);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100, walkableMask))
+                {
+                    walkableRegionDictionary.TryGetValue(hit.collider.gameObject.layer, out penalty);
+                }
+                
+                grid[x, y] = new Node(worldPoint, walkable, x, y, penalty);
             }
         }
     }
@@ -77,6 +100,12 @@ public class GridForPathFinding : MonoBehaviour
         }
         
         return neighbours;
+    }
+    [System.Serializable]
+    public class TerrainType
+    {
+        public LayerMask terrainLayerMask;
+        public float terrainPenalty;
     }
 
     private void OnDrawGizmos()

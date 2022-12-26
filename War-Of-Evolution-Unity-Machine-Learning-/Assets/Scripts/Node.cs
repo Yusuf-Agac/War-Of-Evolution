@@ -14,16 +14,18 @@ public class  Node : Heap<Node>.IHeapItem<Node>
     
     public float gCost;
     public float hCost;
+    public float penalty;
 
     private int heapIndex;
     
-    public Node(Vector3 worldPosition, bool walkable, int gridX, int gridY)
+    public Node(Vector3 worldPosition, bool walkable, int gridX, int gridY, float penalty)
     {
         this.worldPosition = worldPosition;
         this.walkable = walkable;
         this.isEmpty = true;
         this.gridX = gridX;
         this.gridY = gridY;
+        this.penalty = penalty;
     }
 
     public int HeapIndex
