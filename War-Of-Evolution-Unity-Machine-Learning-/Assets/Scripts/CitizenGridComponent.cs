@@ -18,8 +18,10 @@ public class CitizenGridComponent : MonoBehaviour
         Node citizensNode = gridForPathFinding.NodeFromWorldPosition(transform.position);
         if (temporaryNode != null && !temporaryNode.Equals(citizensNode))
         {
+            if(!temporaryNode.isEmpty){temporaryNode.penalty -= 0;}
             temporaryNode.isEmpty = true;
         }
+        if(citizensNode.isEmpty){citizensNode.penalty += 0;}
         citizensNode.isEmpty = false;
         temporaryNode = citizensNode;
     }

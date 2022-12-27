@@ -172,7 +172,7 @@ public class GridForPathFinding : MonoBehaviour
             {
                 Gizmos.color =  Color.Lerp(Color.white, Color.black, Mathf.InverseLerp(penaltyMin, penaltyMax, node.penalty));
                 //Gizmos.color = (node.walkable) ? Gizmos.color : Color.red;
-                Gizmos.color = (!node.isEmpty) ? Color.blue : Gizmos.color;
+                //Gizmos.color = (!node.isEmpty) ? Color.blue : Gizmos.color;
                 Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - debugCubeSpaceSize));
             }
         }
