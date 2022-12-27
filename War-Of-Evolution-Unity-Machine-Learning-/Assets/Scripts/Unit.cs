@@ -54,14 +54,14 @@ public class Unit : MonoBehaviour
             for (int i = currentIndex; i < path.Length; i++)
             {
                 Gizmos.color = Color.black;
-                Gizmos.DrawCube(path[i], Vector3.one / 5);
+                Gizmos.DrawCube(path[i] + Vector3.up, Vector3.one / 5);
                 if (i == currentIndex)
                 {
-                    Gizmos.DrawLine(transform.position, path[currentIndex]);
+                    Gizmos.DrawLine(transform.position + Vector3.up, path[currentIndex] + Vector3.up);
                 }
                 else if(i > 0)
                 {
-                    Gizmos.DrawLine(path[i-1], path[i]);
+                    Gizmos.DrawLine(path[i-1] + Vector3.up, path[i] + Vector3.up);
                 }
             }
         }
