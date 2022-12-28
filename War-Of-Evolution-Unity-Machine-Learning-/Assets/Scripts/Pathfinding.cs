@@ -7,23 +7,16 @@ using UnityEngine.Serialization;
 public class Pathfinding : MonoBehaviour
 {
     private GridForPathFinding gridForPathFinding;
-    private PathRequestManager pathRequestManager;
 
     private void Awake()
     {
         gridForPathFinding = GameObject.FindObjectOfType<GridForPathFinding>();
-        pathRequestManager =GameObject.FindObjectOfType<PathRequestManager>();
     }
 
-    public void StartFindPath(Vector3 startPos, Vector3 targetPos)
+    public void FindPath(PathRequest request, Action<PathResult> callback)
     {
-        StartCoroutine(FindPath(startPos, targetPos));
-    }
-    
-    IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
-    {
-        Node startNode = gridForPathFinding.NodeFromWorldPosition(startPos);
-        Node targetNode = gridForPathFinding.NodeFromWorldPosition(targetPos);
+        Node startNode = gridForPathFinding.NodeFromWorldPosition(request.pathStart);
+        Node targetNode = gridForPathFinding.NodeFromWorldPosition(request.pathEnd);
         
         Vector3[] waypoints = new Vector3[] { };
         bool pathFindingSuccess = false;
@@ -70,14 +63,12 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
-
-        yield return null;
-
         if (pathFindingSuccess)
         {
             waypoints = ReTrace(startNode, targetNode);
+            pathFindingSuccess = waypoints.Length > 0;
         }
-        pathRequestManager.FinishedFindPath(waypoints, pathFindingSuccess);
+        callback(new PathResult(waypoints, pathFindingSuccess, request));
     }
 
     public Vector3[] ReTrace(Node start, Node end)

@@ -1145,7 +1145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugCubeSpaceSize: 0
-  displayGrid: 1
+  displayGrid: 0
   walkableRegions:
   - terrainLayerMask:
       serializedVersion: 2
@@ -1633,7 +1633,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2061155690
 GameObject:
@@ -1705,7 +1705,7 @@ PrefabInstance:
     - target: {fileID: 9146247268718972078, guid: f7cb0adeec591274d8ef58d732521911,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9146247268718972078, guid: f7cb0adeec591274d8ef58d732521911,
         type: 3}
