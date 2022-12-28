@@ -44,15 +44,15 @@ public class Path
     
     public void DrawWithGizmos()
     {
-        Gizmos.color = Color.black;
+        Gizmos.color = Color.green;
         foreach (Vector3 p in lookPoints)
         {
-            Gizmos.DrawCube(p + Vector3.up, Vector3.one);
+            Gizmos.DrawCube(p + (Vector3.up * 2), Vector3.one);
         }
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.yellow;
         foreach (Line l in turnBoundaries)
         {
-            l.DrawWithGizmos(10);
+            l.DrawWithGizmos(4);
         }
     }
 }
