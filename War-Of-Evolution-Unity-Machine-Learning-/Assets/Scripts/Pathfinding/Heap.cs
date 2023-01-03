@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System;
 
-public class Heap<T> where T : Heap<T>.IHeapItem<T>
+public class Heap<T> where T : Heap<T>.IHeapItem
 {
     private T[] items;
     private int itemCount;
@@ -109,7 +109,7 @@ public class Heap<T> where T : Heap<T>.IHeapItem<T>
         items[itemB.HeapIndex] = itemB;
     }
     
-    public interface IHeapItem<T> : IComparable<T>
+    public interface IHeapItem : IComparable<T>
     {
         int HeapIndex
         {

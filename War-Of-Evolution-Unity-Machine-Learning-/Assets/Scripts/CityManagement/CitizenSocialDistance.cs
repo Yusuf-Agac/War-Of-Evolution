@@ -8,14 +8,12 @@ public class CitizenSocialDistance : MonoBehaviour
     public LayerMask citizenMask;
 
     public float force = 10f;
-    public float friction = 0.5f;
     public float socialDistance = 1f;
     
     private CityManagement cityManagement;
-
     private Rigidbody rb;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cityManagement = FindObjectOfType<CityManagement>();
@@ -29,10 +27,19 @@ public class CitizenSocialDistance : MonoBehaviour
             if (hit.transform.GetInstanceID() != transform.GetInstanceID() && hit.transform.CompareTag("Citizen"))
             {
                 Vector3 direction = hit.transform.position - transform.position;
-                hit.GetComponent<Rigidbody>().AddForce(direction.normalized * (force * cityManagement.citySocialDistanceForceMultiplier * (1 / direction.magnitude)), ForceMode.Force);
-                Debug.Log("Forced Name " + hit.name + " / Direction " + direction);
+                direction.y = 0;
+                Vector3 calculatedForce = direction.normalized * Mathf.Clamp((force * cityManagement.citySocialDistanceForceMultiplier * (1 / direction.magnitude)), cityManagement.minSocialDistanceForce, cityManagement.maxSocialDistanceForce);
+                hit.GetComponent<Rigidbody>().AddForce(calculatedForce, ForceMode.Impulse);
             }
         }
-        rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * friction);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, socialDistance * cityManagement.citySocialDistanceMultiplier);
+        }
     }
 }

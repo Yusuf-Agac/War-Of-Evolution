@@ -47,12 +47,12 @@ public class Path
         Gizmos.color = Color.green;
         foreach (Vector3 p in lookPoints)
         {
-            Gizmos.DrawCube(p + (Vector3.up * 2), Vector3.one);
+            Gizmos.DrawCube(p + (Vector3.up * 2), Vector3.one / 10f);
         }
         Gizmos.color = Color.yellow;
         foreach (Line l in turnBoundaries)
         {
-            l.DrawWithGizmos(4);
+            l.DrawWithGizmos(2);
         }
     }
 }

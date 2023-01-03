@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class GridForPathFinding : MonoBehaviour
 {
@@ -23,12 +24,15 @@ public class GridForPathFinding : MonoBehaviour
     public Vector2 gridWorldSize;
     public float nodeRadius;
     Node[,] grid;
+    private List<Node> walkableNodes;
     float nodeDiameter;
     int gridSizeX, gridSizeY;
     public int gridSize => gridSizeX * gridSizeY;
 
     private void Awake()
     {
+        walkableNodes = new List<Node>();
+        
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
@@ -67,6 +71,7 @@ public class GridForPathFinding : MonoBehaviour
                 }
                 if (!walkable) { penalty = obstacleProximityPenalty; }
                 grid[x, y] = new Node(worldPoint, walkable, x, y, penalty);
+                if(walkable) { walkableNodes.Add(grid[x, y]); }
             }
         }
         
@@ -163,6 +168,11 @@ public class GridForPathFinding : MonoBehaviour
         public float terrainPenalty;
     }
 
+    public Node GetRandomWalkable()
+    {
+        return walkableNodes[Random.Range(0, walkableNodes.Count)];
+    }
+    
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 0, gridWorldSize.y));
