@@ -8,7 +8,7 @@ public class Path
     public readonly Line[] turnBoundaries;
     public readonly int finishLineIndex;
     public readonly int slowDownIndex;
-    
+
     public Path(Vector3[] waypoints, Vector3 startPos, float turnDst, float stoppingDst)
     {
         lookPoints = waypoints;
@@ -42,17 +42,20 @@ public class Path
         return new Vector2(v3.x, v3.z);
     }
     
-    public void DrawWithGizmos()
+    public void DrawWithGizmos(CityManagement cityManagement)
     {
-        Gizmos.color = Color.green;
-        foreach (Vector3 p in lookPoints)
+        if (cityManagement.displayCitizenGizmos)
         {
-            Gizmos.DrawCube(p + (Vector3.up * 2), Vector3.one / 10f);
-        }
-        Gizmos.color = Color.yellow;
-        foreach (Line l in turnBoundaries)
-        {
-            l.DrawWithGizmos(2);
+            Gizmos.color = Color.green;
+            foreach (Vector3 p in lookPoints)
+            {
+                Gizmos.DrawCube(p + (Vector3.up * 2), Vector3.one / 10f);
+            }
+            Gizmos.color = Color.yellow;
+            foreach (Line l in turnBoundaries)
+            {
+                l.DrawWithGizmos(2);
+            }
         }
     }
 }

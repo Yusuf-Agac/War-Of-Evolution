@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 129768362684087841}
   - component: {fileID: 1135868614}
   - component: {fileID: 7867750063507406783}
+  - component: {fileID: 1395964844285578512}
   - component: {fileID: 82417058}
   - component: {fileID: 8917089693648943275}
   m_Layer: 10
@@ -217,6 +218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867b28e9354497d47afdfbe0ec52166d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isVirus: 0
+  immunity: 1
 --- !u!114 &129768362684087841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathUpdateMoveThresholdForPlayer: 0.5
   speed: 5
-  turnDst: 5
+  turnDst: 1
   stoppingDst: 10
 --- !u!114 &7867750063507406783
 MonoBehaviour:
@@ -257,12 +260,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70bab7067ba39848bfc4d23f35888ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  citizenMask:
-    serializedVersion: 2
-    m_Bits: 1024
   force: 1
-  friction: 1
   socialDistance: 1
+--- !u!114 &1395964844285578512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4973179059125025357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aab5b63b7fb6c84187fa660324abcb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infectionRadius: 1
+  NormalCitizen: {fileID: 2100000, guid: b69d90b5e5c10b446a0608597c02ee1b, type: 2}
+  InfectedCitizen: {fileID: 2100000, guid: 2510fe3a2f215b5498d3cedb4ecf0da5, type: 2}
 --- !u!54 &82417058
 Rigidbody:
   m_ObjectHideFlags: 0

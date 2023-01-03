@@ -17,9 +17,11 @@ public class Unit : MonoBehaviour
     private Path path;
     bool followingPathThreshold = false;
     private GridForPathFinding gridForPathFinding;
+    private CityManagement cityManagement;
 
     private void Start()
     {
+        cityManagement = FindObjectOfType<CityManagement>();
         rb = GetComponent<Rigidbody>();
         gridForPathFinding = GameObject.FindObjectOfType<GridForPathFinding>();
         RandomTargetPosition();
@@ -49,11 +51,8 @@ public class Unit : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.25f);
-            if(followingPathThreshold){Debug.Log("SqrMagnitude " + (target - transform.position).sqrMagnitude);}
-            
             if ((target - targetPosOld).sqrMagnitude > sqrMoveThreshold || (followingPathThreshold && (target - transform.position).sqrMagnitude > sqrMoveThreshold))
             {
-                Debug.Log("Requesting new path " + transform.name);
                 PathRequestManager.RequestPath(new PathRequest(transform.position, target, OnPathFound));
                 targetPosOld = target;
             }
@@ -76,7 +75,6 @@ public class Unit : MonoBehaviour
                 {
                     followingPath = false;
                     followingPathThreshold = true;
-                    Debug.Log("Name " + transform.name + " path is over");
                     RandomTargetPosition();
                     break;
                 }
@@ -94,14 +92,13 @@ public class Unit : MonoBehaviour
                     {
                         followingPath = false;
                         followingPathThreshold = true;
-                        Debug.Log("Name " + transform.name + " path is over");
                         RandomTargetPosition();
                     }
                 }
                 Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-                //transform.Translate(Vector3.forward * Time.deltaTime * speed * speedPercent, Space.Self);
-                transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
+                transform.Translate(Vector3.forward * Time.deltaTime * speed * speedPercent, Space.Self);
+                //transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
             }
             yield return null;
         }
@@ -118,7 +115,7 @@ public class Unit : MonoBehaviour
         Gizmos.DrawSphere(target, 0.2f);
         if (path != null)
         {
-            path.DrawWithGizmos();
+            path.DrawWithGizmos(cityManagement);
         }
     }
 }
