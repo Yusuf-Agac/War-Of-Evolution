@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7832675267119454886}
   - component: {fileID: 5308351500629349761}
   - component: {fileID: 6281482867071553162}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 308108674904092186}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.577, z: 0.615}
-  m_LocalScale: {x: 0.37167, y: 0.2447918, z: 0.28112}
+  m_LocalRotation: {x: 0.43267068, y: -0, z: -0, w: 0.901552}
+  m_LocalPosition: {x: 0, y: 1.6, z: 1.37}
+  m_LocalScale: {x: 0.37167, y: 1.6773075, z: 0.28112}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9146247268718972078}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 51.274, y: 0, z: 0}
 --- !u!33 &5308351500629349761
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8740294859425722644}
   - component: {fileID: 3226863454610410697}
   - component: {fileID: 4164758628186919252}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,6 +275,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infectionRadius: 1
+  resistance: 1
+  virulence: 1
   NormalCitizen: {fileID: 2100000, guid: b69d90b5e5c10b446a0608597c02ee1b, type: 2}
   InfectedCitizen: {fileID: 2100000, guid: 2510fe3a2f215b5498d3cedb4ecf0da5, type: 2}
 --- !u!54 &82417058

@@ -13,12 +13,6 @@ public class CityManagement : MonoBehaviour
     [HideInInspector] public float citySocialDistanceForceMultiplier = 0.7f;
     public Vector2 minMaxCitySocialDistanceForce = new Vector2(0.1f, 0.7f);
     public Slider citySocialDistanceForceSlider;
-    [HideInInspector] public float maxSocialDistanceForce = 3.75f;
-    public Vector2 minMaxMaxSocialDistanceForce = new Vector2(1f, 3.75f);
-    public Slider maxSocialDistanceForceSlider;
-    [HideInInspector] public float minSocialDistanceForce = 0.2f;
-    public Vector2 minMaxMinSocialDistanceForce = new Vector2(0.1f, 0.2f);
-    public Slider minSocialDistanceForceSlider;
     
     public float citizenInfectionDistance = 1f;
     
@@ -28,8 +22,6 @@ public class CityManagement : MonoBehaviour
     {
         UpdateCitySocialDistanceMultiplier();
         UpdateCitySocialDistanceForceMultiplier();
-        UpdateMaxSocialDistanceForce();
-        UpdateMinSocialDistanceForce();
     }
 
     public void UpdateCitySocialDistanceMultiplier()
@@ -39,13 +31,5 @@ public class CityManagement : MonoBehaviour
     public void UpdateCitySocialDistanceForceMultiplier()
     {
         citySocialDistanceForceMultiplier = Mathf.Lerp(minMaxCitySocialDistanceForce.x, minMaxCitySocialDistanceForce.y, citySocialDistanceForceSlider.value);
-    }
-    public void UpdateMaxSocialDistanceForce()
-    {
-        maxSocialDistanceForce = Mathf.Lerp(minMaxMaxSocialDistanceForce.x, minMaxMaxSocialDistanceForce.y, maxSocialDistanceForceSlider.value);
-    }
-    public void UpdateMinSocialDistanceForce()
-    {
-        minSocialDistanceForce = Mathf.Lerp(minMaxMinSocialDistanceForce.x, minMaxMinSocialDistanceForce.y, minSocialDistanceForceSlider.value);
     }
 }

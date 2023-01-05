@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class CitizenSocialDistance : MonoBehaviour
 {
-    public float force = 10f;
+    public float force = 1f;
     public float socialDistance = 1f;
     
     private CityManagement cityManagement;
@@ -30,7 +30,7 @@ public class CitizenSocialDistance : MonoBehaviour
             {
                 Vector3 direction = hit.transform.position - transform.position;
                 direction.y = 0;
-                Vector3 calculatedForce = direction.normalized * Mathf.Clamp((force * cityManagement.citySocialDistanceForceMultiplier * (1 / direction.magnitude)), cityManagement.minSocialDistanceForce, cityManagement.maxSocialDistanceForce);
+                Vector3 calculatedForce = direction.normalized * (force * cityManagement.citySocialDistanceForceMultiplier * (1 / direction.magnitude));
                 hit.GetComponent<Rigidbody>().AddForce(calculatedForce, ForceMode.Impulse);
             }
         }
