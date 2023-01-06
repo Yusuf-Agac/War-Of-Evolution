@@ -21,7 +21,7 @@ public class CityPopulation : MonoBehaviour
     
     void Start()
     {
-        Citizens = GameObject.FindGameObjectsWithTag("Citizen").ToList();
+        //Citizens = GameObject.FindGameObjectsWithTag("Citizen").ToList();
         UpdatePopulationText();
         UpdateVirusPercentText();
         UpdateCuredText();

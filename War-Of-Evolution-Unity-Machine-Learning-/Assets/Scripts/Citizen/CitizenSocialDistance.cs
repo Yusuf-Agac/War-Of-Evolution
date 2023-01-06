@@ -11,12 +11,12 @@ public class CitizenSocialDistance : MonoBehaviour
     
     private CityManagement cityManagement;
     
-    private CitizenSkills citizenSkills;
+    private CitizenBehaviors citizenBehaviors;
     private Rigidbody rb;
 
     private void Awake()
     {
-        citizenSkills = GetComponent<CitizenSkills>();
+        citizenBehaviors = GetComponent<CitizenBehaviors>();
         rb = GetComponent<Rigidbody>();
         cityManagement = FindObjectOfType<CityManagement>();
     }

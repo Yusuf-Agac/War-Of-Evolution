@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
 
     private Vector3 target;
     private Rigidbody rb;
+    private CitizenBehaviors citizenBehaviors;
     public float speed;
     public int turnDst = 5;
     public int stoppingDst = 10;
@@ -21,6 +22,7 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
+        citizenBehaviors = GetComponent<CitizenBehaviors>();
         cityManagement = FindObjectOfType<CityManagement>();
         rb = GetComponent<Rigidbody>();
         gridForPathFinding = GameObject.FindObjectOfType<GridForPathFinding>();
@@ -30,7 +32,7 @@ public class Unit : MonoBehaviour
 
     private void OnPathFound(Vector3[] waypoints, bool successful)
     {
-        if (successful)
+        if (successful && gameObject)
         {
             path = new Path(waypoints, transform.position, turnDst, stoppingDst);
             StopCoroutine(nameof(FollowPath));
@@ -75,6 +77,7 @@ public class Unit : MonoBehaviour
                 {
                     followingPath = false;
                     followingPathThreshold = true;
+                    citizenBehaviors.GainPrizeForArriving();
                     RandomTargetPosition();
                     break;
                 }
@@ -93,6 +96,7 @@ public class Unit : MonoBehaviour
                         followingPath = false;
                         followingPathThreshold = true;
                         RandomTargetPosition();
+                        citizenBehaviors.GainPrizeForArriving();
                     }
                 }
                 Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);

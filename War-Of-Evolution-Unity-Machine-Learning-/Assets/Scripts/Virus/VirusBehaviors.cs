@@ -12,10 +12,11 @@ public class VirusBehaviors : MonoBehaviour
     public Material InfectedCitizen;
 
     private MeshRenderer meshRenderer;
-    private CitizenSkills citizenSkills;
+    private CitizenBehaviors citizenBehaviors;
 
     private CityManagement cityManagement;
     private CityPopulation cityPopulation;
+    private CityVirusManagement cityVirusManagement;
     private CitizenSocialDistance citizenSocialDistance;
 
     private GameObject DieParticlePrefab;
@@ -23,10 +24,12 @@ public class VirusBehaviors : MonoBehaviour
     private void Awake()
     {
         DieParticlePrefab = Resources.Load("ParticleEffect/Die") as GameObject;
+        cityVirusManagement = FindObjectOfType<CityVirusManagement>();
+        cityVirusManagement.viruses.Add(this);
         cityPopulation = FindObjectOfType<CityPopulation>();
         cityManagement = FindObjectOfType<CityManagement>();
         citizenSocialDistance = GetComponent<CitizenSocialDistance>();
-        citizenSkills = GetComponent<CitizenSkills>();
+        citizenBehaviors = GetComponent<CitizenBehaviors>();
         meshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
 
         StartCoroutine(InfectOtherCitizens());
@@ -37,7 +40,7 @@ public class VirusBehaviors : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            if (citizenSkills.isVirus)
+            if (citizenBehaviors.citizen.isVirus)
             {
                 if (Random.Range(0, 100) <= 50f)
                 {
@@ -55,11 +58,11 @@ public class VirusBehaviors : MonoBehaviour
 
     public void GetInfected(Virus virus)
     {
-        if(virus == null || citizenSkills.isVirus){return;}
+        if(citizenBehaviors.citizen == null && (virus == null || citizenBehaviors.citizen == null || citizenBehaviors.citizen.isVirus)){return;}
         Inherited(virus);
         Debug.Log(transform.name + " got infected");
         meshRenderer.material = InfectedCitizen;
-        citizenSkills.isVirus = true;
+        citizenBehaviors.citizen.isVirus = true;
         cityPopulation.IncreaseInfected();
         StartCoroutine(Recovering());
         StartCoroutine(Evolve());
@@ -75,7 +78,7 @@ public class VirusBehaviors : MonoBehaviour
     public void GetCured()
     {
         meshRenderer.material = NormalCitizen;
-        citizenSkills.isVirus = false;
+        citizenBehaviors.citizen.isVirus = false;
         ResetVirus();
         cityPopulation.IncreaseCured();
     }
@@ -90,6 +93,7 @@ public class VirusBehaviors : MonoBehaviour
     public void GetDead()
     {
         cityPopulation.Citizens.Remove(gameObject);
+        cityVirusManagement.viruses.Remove(this);
         cityPopulation.IncreaseDead();
         Instantiate(DieParticlePrefab, null).transform.position = transform.position;
         Destroy(gameObject);
@@ -99,7 +103,7 @@ public class VirusBehaviors : MonoBehaviour
     {
         if (virusArray.Length > index)
         {
-            if (virusArray[index].GetComponent<CitizenSkills>().isVirus == false)
+            if (virusArray[index].GetComponent<CitizenBehaviors>().citizen.isVirus == false)
             {
                 virusArray[index].GetComponent<VirusBehaviors>().GetInfected(virus);
             }
@@ -115,7 +119,7 @@ public class VirusBehaviors : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(2);
-            if ((Random.Range(0, 50 * virus.resistance) / citizenSkills.immunity) <= 1f)
+            if ((Random.Range(0, 50 * virus.resistance) / citizenBehaviors.citizen.immunity) <= 1f)
             {
                 GetCured();
                 Debug.Log(transform.name + " Recovered");
@@ -142,7 +146,7 @@ public class VirusBehaviors : MonoBehaviour
             virus.resistance += 0.02f;
             virus.virulence += 0.02f;
             virus.infectionRadius += 0.02f;
-            if(citizenSkills.isVirus == false) { yield break; }
+            if(citizenBehaviors.citizen.isVirus == false) { yield break; }
         }
     }
     
