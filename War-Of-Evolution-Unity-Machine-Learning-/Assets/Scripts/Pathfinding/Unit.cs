@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Unit : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Unit : MonoBehaviour
 
     private void OnPathFound(Vector3[] waypoints, bool successful)
     {
-        if (successful && gameObject)
+        if (this != null && successful)
         {
             path = new Path(waypoints, transform.position, turnDst, stoppingDst);
             StopCoroutine(nameof(FollowPath));
@@ -52,7 +53,7 @@ public class Unit : MonoBehaviour
         Vector3 targetPosOld = target;
         while (true)
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
             if ((target - targetPosOld).sqrMagnitude > sqrMoveThreshold || (followingPathThreshold && (target - transform.position).sqrMagnitude > sqrMoveThreshold))
             {
                 PathRequestManager.RequestPath(new PathRequest(transform.position, target, OnPathFound));
@@ -102,7 +103,6 @@ public class Unit : MonoBehaviour
                 Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
                 transform.Translate(Vector3.forward * Time.deltaTime * speed * speedPercent, Space.Self);
-                //transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
             }
             yield return null;
         }
@@ -111,6 +111,26 @@ public class Unit : MonoBehaviour
     public void RandomTargetPosition()
     {
         target = gridForPathFinding.GetRandomWalkable().worldPosition + Vector3.up;
+    }
+
+    IEnumerator CheckIfUnitNodeWalkable()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(4f, 10f));
+            if (gridForPathFinding.NodeFromWorldPosition(transform.position).walkable == false)
+            {
+                List<Node> neighbours = gridForPathFinding.GetNeighboursOfNode(gridForPathFinding.NodeFromWorldPosition(transform.position));
+                foreach (Node node in neighbours)
+                {
+                    if (node.walkable)
+                    {
+                        transform.position = node.worldPosition;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public void OnDrawGizmos()

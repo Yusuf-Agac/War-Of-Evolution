@@ -23,12 +23,16 @@ public class CitizenSocialDistance : MonoBehaviour
     
     void FixedUpdate()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, socialDistance * cityManagement.citySocialDistanceMultiplier, LayerMask.GetMask("Citizen"));
+        float distance = socialDistance * cityManagement.citySocialDistanceMultiplier * transform.localScale.x;
+        if(distance <= 0.1f){return;}
+        
+        Collider[] hits = Physics.OverlapSphere(transform.position, distance, LayerMask.GetMask("Citizen"));
         foreach (Collider hit in hits)
         {
             if (hit.transform.GetInstanceID() != transform.GetInstanceID() && hit.transform.CompareTag("Citizen"))
             {
                 Vector3 direction = hit.transform.position - transform.position;
+                if(direction.magnitude <= 0.001f){ continue; }
                 direction.y = 0;
                 Vector3 calculatedForce = direction.normalized * (force * cityManagement.citySocialDistanceForceMultiplier * (1 / direction.magnitude));
                 hit.GetComponent<Rigidbody>().AddForce(calculatedForce, ForceMode.Impulse);
@@ -41,7 +45,7 @@ public class CitizenSocialDistance : MonoBehaviour
         if (Application.isPlaying)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, socialDistance * cityManagement.citySocialDistanceMultiplier);
+            Gizmos.DrawWireSphere(transform.position, transform.localScale.x * socialDistance * cityManagement.citySocialDistanceMultiplier);
         }
     }
 }

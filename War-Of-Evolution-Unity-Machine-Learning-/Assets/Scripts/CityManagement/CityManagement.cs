@@ -15,7 +15,8 @@ public class CityManagement : MonoBehaviour
     public Slider citySocialDistanceForceSlider;
     
     public float citizenInfectionDistance = 1f;
-    
+    public float citizenEnergyPerSecond = 0.01f;
+    public float citizenEnergyPrize = 0.1f;
     public bool displayCitizenGizmos = false;
 
     private void Start()

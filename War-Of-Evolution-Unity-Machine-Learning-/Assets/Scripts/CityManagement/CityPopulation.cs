@@ -18,6 +18,8 @@ public class CityPopulation : MonoBehaviour
     public int curedCount = 0;
     public TextMeshProUGUI deadCountText;
     public int deadCount = 0;
+    public TextMeshProUGUI birthCountText;
+    public int birthCount = 0;
     
     void Start()
     {
@@ -53,6 +55,13 @@ public class CityPopulation : MonoBehaviour
         UpdatePopulationText();
         UpdateVirusPercentText();
     }
+    
+    public void IncreaseBirth()
+    {
+        birthCount++;
+        UpdateBirthText();
+        UpdatePopulationText();
+    }
 
     public void UpdatePopulationText()
     {
@@ -62,7 +71,7 @@ public class CityPopulation : MonoBehaviour
     public void UpdateVirusPercentText()
     {
         Debug.Log(virusCount);
-        virusPercentText.text = Citizens.Count > 0 ? "Virus: " + virusCount + " -> " + ((virusCount * 100) / Citizens.Count ) + "%" : "Virus: 0 -> 100%";
+        virusPercentText.text = Citizens.Count > 0 ? "Virus: " + ((virusCount * 100) / Citizens.Count ) + "%" : "Virus: 100%";
     }
     
     public void UpdateInfectedText()
@@ -78,5 +87,10 @@ public class CityPopulation : MonoBehaviour
     public void UpdateDeadText()
     {
         deadCountText.text = "Dead: " + deadCount;
+    }
+    
+    public void UpdateBirthText()
+    {
+        birthCountText.text = "Birth: " + birthCount;
     }
 }

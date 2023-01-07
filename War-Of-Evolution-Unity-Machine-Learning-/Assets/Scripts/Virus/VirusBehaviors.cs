@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class VirusBehaviors : MonoBehaviour
 {
-    public Virus virus = new Virus(1, 1, 1);
+    public Virus virus;
     
     public Material NormalCitizen;
     public Material InfectedCitizen;
@@ -20,7 +20,7 @@ public class VirusBehaviors : MonoBehaviour
     private CitizenSocialDistance citizenSocialDistance;
 
     private GameObject DieParticlePrefab;
-
+    
     private void Awake()
     {
         DieParticlePrefab = Resources.Load("ParticleEffect/Die") as GameObject;
@@ -31,6 +31,8 @@ public class VirusBehaviors : MonoBehaviour
         citizenSocialDistance = GetComponent<CitizenSocialDistance>();
         citizenBehaviors = GetComponent<CitizenBehaviors>();
         meshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
+        meshRenderer.material = NormalCitizen;
+        virus = new Virus(1, 1, 1, 1);
 
         StartCoroutine(InfectOtherCitizens());
     }
@@ -39,13 +41,13 @@ public class VirusBehaviors : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(Random.Range(1f, 2f));
             if (citizenBehaviors.citizen.isVirus)
             {
-                if (Random.Range(0, 100) <= 50f)
+                if (Random.Range(0, 100) <= 50f * virus.infectiousness)
                 {
                     Collider[] near = Physics.OverlapSphere(transform.position,
-                        virus.infectionRadius * cityManagement.citizenInfectionDistance, LayerMask.GetMask("Citizen"));
+                        transform.localScale.x * virus.infectionRadius * cityManagement.citizenInfectionDistance, LayerMask.GetMask("Citizen"));
                     if (near.Length > 0)
                     {
                         SetVirus(near, 0);
@@ -95,7 +97,7 @@ public class VirusBehaviors : MonoBehaviour
         cityPopulation.Citizens.Remove(gameObject);
         cityVirusManagement.viruses.Remove(this);
         cityPopulation.IncreaseDead();
-        Instantiate(DieParticlePrefab, null).transform.position = transform.position;
+        //Instantiate(DieParticlePrefab, null).transform.position = transform.position;
         Destroy(gameObject);
     }
 
@@ -118,22 +120,16 @@ public class VirusBehaviors : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(Random.Range(2f, 3f));
             if ((Random.Range(0, 50 * virus.resistance) / citizenBehaviors.citizen.immunity) <= 1f)
             {
                 GetCured();
-                Debug.Log(transform.name + " Recovered");
                 yield break;
             }
             else if (Random.Range(0, 100) <= virus.virulence)
             {
                 GetDead();
-                Debug.Log(transform.name + " Died");
                 yield break;
-            }
-            else
-            {
-                Debug.Log(transform.name + " Recovering is failed");
             }
         }
     }
@@ -142,10 +138,11 @@ public class VirusBehaviors : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
-            virus.resistance += 0.02f;
-            virus.virulence += 0.02f;
-            virus.infectionRadius += 0.02f;
+            yield return new WaitForSeconds(Random.Range(3f, 6f));
+            virus.resistance += 0.01f;
+            virus.virulence += 0.06f;
+            virus.infectionRadius += 0.06f;
+            virus.infectiousness += 0.06f;
             if(citizenBehaviors.citizen.isVirus == false) { yield break; }
         }
     }
@@ -155,7 +152,7 @@ public class VirusBehaviors : MonoBehaviour
         if (Application.isPlaying)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, virus.infectionRadius * cityManagement.citizenInfectionDistance);
+            Gizmos.DrawWireSphere(transform.position, transform.localScale.x * virus.infectionRadius * cityManagement.citizenInfectionDistance);
         }
     }
 }
