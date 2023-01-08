@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using General;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -47,7 +48,7 @@ public class VirusBehaviors : MonoBehaviour
                 if (Random.Range(0, 100) <= 50f * virus.infectiousness)
                 {
                     Collider[] near = Physics.OverlapSphere(transform.position,
-                        transform.localScale.x * virus.infectionRadius * cityManagement.citizenInfectionDistance, LayerMask.GetMask("Citizen"));
+                        transform.localScale.x * virus.infectionRadius * cityVirusManagement.virusInfectionDistance, LayerMask.GetMask("Citizen"));
                     if (near.Length > 0)
                     {
                         SetVirus(near, 0);
@@ -62,7 +63,6 @@ public class VirusBehaviors : MonoBehaviour
     {
         if(citizenBehaviors.citizen == null && (virus == null || citizenBehaviors.citizen == null || citizenBehaviors.citizen.isVirus)){return;}
         Inherited(virus);
-        Debug.Log(transform.name + " got infected");
         meshRenderer.material = InfectedCitizen;
         citizenBehaviors.citizen.isVirus = true;
         cityPopulation.IncreaseInfected();
@@ -72,9 +72,9 @@ public class VirusBehaviors : MonoBehaviour
 
     private void Inherited(Virus virus)
     {
-        this.virus.resistance = virus.resistance;
-        this.virus.infectionRadius = virus.infectionRadius;
-        this.virus.virulence = virus.virulence;
+        this.virus.resistance = virus.resistance * cityVirusManagement.infectionMutationMultiplier;
+        this.virus.infectionRadius = virus.infectionRadius * cityVirusManagement.infectionMutationMultiplier;
+        this.virus.virulence = virus.virulence * cityVirusManagement.infectionMutationMultiplier;
     }
 
     public void GetCured()
@@ -97,7 +97,7 @@ public class VirusBehaviors : MonoBehaviour
         cityPopulation.Citizens.Remove(gameObject);
         cityVirusManagement.viruses.Remove(this);
         cityPopulation.IncreaseDead();
-        //Instantiate(DieParticlePrefab, null).transform.position = transform.position;
+        Instantiate(DieParticlePrefab, null).transform.position = transform.position;
         Destroy(gameObject);
     }
 
@@ -149,10 +149,10 @@ public class VirusBehaviors : MonoBehaviour
     
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying && GizmosSettings.ShowGizmos)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, transform.localScale.x * virus.infectionRadius * cityManagement.citizenInfectionDistance);
+            Gizmos.DrawWireSphere(transform.position, transform.localScale.x * virus.infectionRadius * cityVirusManagement.virusInfectionDistance);
         }
     }
 }

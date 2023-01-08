@@ -8,5 +8,6 @@ public class EngineSettings : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 144;
+
     }
 }

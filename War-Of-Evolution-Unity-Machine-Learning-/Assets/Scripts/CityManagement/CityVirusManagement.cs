@@ -9,6 +9,8 @@ public class CityVirusManagement : MonoBehaviour
     CityPopulation cityPopulation;
     
     public List<VirusBehaviors> viruses;
+    public float infectionMutationMultiplier = 1.01f;
+    public float virusInfectionDistance = 1f;
     void Start()
     {
         cityPopulation = GetComponent<CityPopulation>();

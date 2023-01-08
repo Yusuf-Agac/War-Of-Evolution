@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using General;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -42,7 +43,7 @@ public class CitizenSocialDistance : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying && GizmosSettings.ShowGizmos)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, transform.localScale.x * socialDistance * cityManagement.citySocialDistanceMultiplier);

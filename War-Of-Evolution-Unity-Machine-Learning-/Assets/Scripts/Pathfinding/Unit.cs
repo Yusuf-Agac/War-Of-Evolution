@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using General;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -135,11 +136,14 @@ public class Unit : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(target, 0.2f);
-        if (path != null)
+        if (GizmosSettings.ShowGizmos)
         {
-            path.DrawWithGizmos(cityManagement);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(target, 0.2f);
+            if (path != null)
+            {
+                path.DrawWithGizmos(cityManagement);
+            }
         }
     }
 }

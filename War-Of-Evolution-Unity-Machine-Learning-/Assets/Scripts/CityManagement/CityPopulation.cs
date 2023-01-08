@@ -70,7 +70,6 @@ public class CityPopulation : MonoBehaviour
 
     public void UpdateVirusPercentText()
     {
-        Debug.Log(virusCount);
         virusPercentText.text = Citizens.Count > 0 ? "Virus: " + ((virusCount * 100) / Citizens.Count ) + "%" : "Virus: 100%";
     }
     

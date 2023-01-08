@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using General;
 using UnityEngine;
 
 public class Path
@@ -44,7 +45,7 @@ public class Path
     
     public void DrawWithGizmos(CityManagement cityManagement)
     {
-        if (cityManagement.displayCitizenGizmos)
+        if (cityManagement.displayCitizenGizmos && GizmosSettings.ShowGizmos)
         {
             Gizmos.color = Color.green;
             foreach (Vector3 p in lookPoints)

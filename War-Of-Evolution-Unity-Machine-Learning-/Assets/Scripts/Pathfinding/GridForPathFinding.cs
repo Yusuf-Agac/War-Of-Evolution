@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using General;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -175,15 +176,18 @@ public class GridForPathFinding : MonoBehaviour
     
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 0, gridWorldSize.y));
-        if (grid != null && displayGrid)
+        if (GizmosSettings.ShowGizmos)
         {
-            foreach (Node node in grid)
+            Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 0, gridWorldSize.y));
+            if (grid != null && displayGrid)
             {
-                Gizmos.color =  Color.Lerp(Color.white, Color.black, Mathf.InverseLerp(penaltyMin, penaltyMax, node.penalty));
-                //Gizmos.color = (node.walkable) ? Gizmos.color : Color.red;
-                //Gizmos.color = (!node.isEmpty) ? Color.blue : Gizmos.color;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - debugCubeSpaceSize));
+                foreach (Node node in grid)
+                {
+                    Gizmos.color =  Color.Lerp(Color.white, Color.black, Mathf.InverseLerp(penaltyMin, penaltyMax, node.penalty));
+                    //Gizmos.color = (node.walkable) ? Gizmos.color : Color.red;
+                    //Gizmos.color = (!node.isEmpty) ? Color.blue : Gizmos.color;
+                    Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - debugCubeSpaceSize));
+                }
             }
         }
     }

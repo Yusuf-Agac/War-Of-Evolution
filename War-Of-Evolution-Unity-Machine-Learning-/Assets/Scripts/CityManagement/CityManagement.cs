@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CityManagement : MonoBehaviour
@@ -13,8 +14,6 @@ public class CityManagement : MonoBehaviour
     [HideInInspector] public float citySocialDistanceForceMultiplier = 0.7f;
     public Vector2 minMaxCitySocialDistanceForce = new Vector2(0.1f, 0.7f);
     public Slider citySocialDistanceForceSlider;
-    
-    public float citizenInfectionDistance = 1f;
     public float citizenEnergyPerSecond = 0.01f;
     public float citizenEnergyPrize = 0.1f;
     public bool displayCitizenGizmos = false;
