@@ -42,6 +42,7 @@ public class VirusBehaviors : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitUntil(() => citizenBehaviors.isQuarantined == false);
             yield return new WaitForSeconds(Random.Range(1f, 2f));
             if (citizenBehaviors.citizen.isVirus)
             {
@@ -121,15 +122,20 @@ public class VirusBehaviors : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(2f, 3f));
-            if ((Random.Range(0, 50 * virus.resistance) / citizenBehaviors.citizen.immunity) <= 1f)
+            if ((Random.Range(0, 30 * virus.resistance) / citizenBehaviors.citizen.immunity) <= 1f)
             {
                 GetCured();
+                citizenBehaviors.StrengtheningImmuneForCure();
                 yield break;
             }
             else if (Random.Range(0, 100) <= virus.virulence)
             {
                 GetDead();
                 yield break;
+            }
+            else
+            {
+                citizenBehaviors.StrengtheningImmune();
             }
         }
     }

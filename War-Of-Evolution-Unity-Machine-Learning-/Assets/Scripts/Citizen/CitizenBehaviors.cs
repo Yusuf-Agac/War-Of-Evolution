@@ -11,6 +11,8 @@ public class CitizenBehaviors : MonoBehaviour
     private CityPopulation cityPopulation;
     private CityManagement cityManagement;
     private GridForPathFinding gridForPathFinding;
+    
+    public bool isQuarantined = false;
 
     public Citizen citizen = new Citizen(1, 0.5f);
 
@@ -25,11 +27,22 @@ public class CitizenBehaviors : MonoBehaviour
         StartCoroutine(GainEnergy());
     }
 
+    public void StrengtheningImmune()
+    {
+        citizen.immunity += 0.01f;
+    }
+    
+    public void StrengtheningImmuneForCure()
+    {
+        citizen.immunity += 0.2f;
+    }
+    
     private IEnumerator GainEnergy()
     {
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+            if(isQuarantined){continue;}
             citizen.energy += cityManagement.citizenEnergyPerSecond * Random.Range(0.5f, 1.5f);
             if (citizen.energy >= 1)
             {
@@ -55,5 +68,24 @@ public class CitizenBehaviors : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void Quarantine()
+    {
+        transform.GetChild(2).gameObject.SetActive(!transform.GetChild(2).gameObject.activeInHierarchy);
+
+        Unit unit = gameObject.GetComponent<Unit>();
+        unit.enabled = !unit.enabled;
+        
+        CitizenSocialDistance citizenSocialDistance = gameObject.GetComponent<CitizenSocialDistance>();
+        citizenSocialDistance.enabled = !citizenSocialDistance.enabled;
+        
+        VirusBehaviors virusBehaviors = gameObject.GetComponent<VirusBehaviors>();
+        virusBehaviors.enabled = !virusBehaviors.enabled;
+        
+        CitizenGridComponent citizenGridComponent = gameObject.GetComponent<CitizenGridComponent>();
+        citizenGridComponent.enabled = !citizenGridComponent.enabled;
+        
+        isQuarantined = !isQuarantined;
     }
 }

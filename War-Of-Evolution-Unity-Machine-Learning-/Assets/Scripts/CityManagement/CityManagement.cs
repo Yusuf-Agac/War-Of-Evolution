@@ -32,4 +32,12 @@ public class CityManagement : MonoBehaviour
     {
         citySocialDistanceForceMultiplier = Mathf.Lerp(minMaxCitySocialDistanceForce.x, minMaxCitySocialDistanceForce.y, citySocialDistanceForceSlider.value);
     }
+    
+    public void Quarantine()
+    {
+        foreach (var citizen in FindObjectsOfType<CitizenBehaviors>())
+        {
+            citizen.Quarantine();
+        }
+    }
 }

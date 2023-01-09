@@ -54,6 +54,7 @@ public class Unit : MonoBehaviour
         Vector3 targetPosOld = target;
         while (true)
         {
+            yield return new WaitUntil(() => citizenBehaviors.isQuarantined == false);
             yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
             if ((target - targetPosOld).sqrMagnitude > sqrMoveThreshold || (followingPathThreshold && (target - transform.position).sqrMagnitude > sqrMoveThreshold))
             {
@@ -72,6 +73,7 @@ public class Unit : MonoBehaviour
         float speedPercent = 1;
         while (followingPath)
         {
+            yield return new WaitUntil(() => citizenBehaviors.isQuarantined == false);
             Vector2 pos2D = new Vector2(transform.position.x, transform.position.z);
             while (path.turnBoundaries[pathIndex].HasCrossedLine(pos2D))
             {
@@ -118,7 +120,8 @@ public class Unit : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(4f, 10f));
+            yield return new WaitUntil(() => citizenBehaviors.isQuarantined == false);
+            yield return new WaitForSeconds(Random.Range(10f, 20f));
             if (gridForPathFinding.NodeFromWorldPosition(transform.position).walkable == false)
             {
                 List<Node> neighbours = gridForPathFinding.GetNeighboursOfNode(gridForPathFinding.NodeFromWorldPosition(transform.position));
