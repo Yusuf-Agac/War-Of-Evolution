@@ -4451,7 +4451,7 @@ MonoBehaviour:
   citySocialDistanceForceMultiplier: 0.49502984
   minMaxCitySocialDistanceForce: {x: 0, y: 1.5}
   citySocialDistanceForceSlider: {fileID: 874964174}
-  citizenEnergyPerSecond: 0.01
+  citizenEnergyPerSecond: 0.025
   citizenEnergyPrize: 0.1
   displayCitizenGizmos: 0
 --- !u!4 &456114466
@@ -13442,7 +13442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugCubeSpaceSize: 0.016
-  displayGrid: 0
+  displayGrid: 1
   walkableRegions:
   - terrainLayerMask:
       serializedVersion: 2

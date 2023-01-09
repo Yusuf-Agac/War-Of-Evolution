@@ -2,6 +2,6 @@
 {
     public static class GizmosSettings
     {
-        public static bool ShowGizmos = false;
+        public static bool ShowGizmos = true;
     }
 }
