@@ -82,10 +82,6 @@ public class CitizenBehaviors : MonoBehaviour
         
         VirusBehaviors virusBehaviors = gameObject.GetComponent<VirusBehaviors>();
         virusBehaviors.enabled = !virusBehaviors.enabled;
-        
-        CitizenGridComponent citizenGridComponent = gameObject.GetComponent<CitizenGridComponent>();
-        citizenGridComponent.enabled = !citizenGridComponent.enabled;
-        
         isQuarantined = !isQuarantined;
     }
 }

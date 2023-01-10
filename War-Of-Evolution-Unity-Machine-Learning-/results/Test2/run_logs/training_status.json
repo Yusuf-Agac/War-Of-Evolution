@@ -1,0 +1,29 @@
+{
+    "VirusBehavior": {
+        "checkpoints": [
+            {
+                "steps": 1408,
+                "file_path": "results\\Test2\\VirusBehavior\\VirusBehavior-1408.onnx",
+                "reward": null,
+                "creation_time": 1673369338.1075375,
+                "auxillary_file_paths": [
+                    "results\\Test2\\VirusBehavior\\VirusBehavior-1408.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1408,
+            "file_path": "results\\Test2\\VirusBehavior.onnx",
+            "reward": null,
+            "creation_time": 1673369338.1075375,
+            "auxillary_file_paths": [
+                "results\\Test2\\VirusBehavior\\VirusBehavior-1408.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

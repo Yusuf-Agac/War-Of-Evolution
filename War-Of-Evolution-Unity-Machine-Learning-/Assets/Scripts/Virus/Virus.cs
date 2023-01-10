@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Virus
 {
-    public float infectionRadius = 1;
-    public float infectiousness = 1f;
-    public float resistance = 1;
-    public float virulence = 1;
+    public float infectionRadius;
+    public float infectiousness;
+    public float resistance;
+    public float virulence;
+    public float speedImpact;
     
-    public Virus(float infectionRadius, float resistance, float virulence, float infectiousness)
+    public Virus(float infectionRadius, float resistance, float virulence, float infectiousness, float speedImpact)
     {
         this.infectionRadius = infectionRadius;
         this.resistance = resistance;
         this.virulence = virulence;
         this.infectiousness = infectiousness;
+        this.speedImpact = speedImpact;
     }
 }

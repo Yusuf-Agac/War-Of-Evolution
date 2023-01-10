@@ -24,7 +24,7 @@ public class CityVirusManagement : MonoBehaviour
             yield return new WaitForSeconds(500 / cityPopulation.Citizens.Count);
             if (cityPopulation.virusCount <= 0 && Random.Range(0f, 100f) < 50f)
             {
-                viruses[Random.Range(0, viruses.Count)].GetInfected(new Virus(1, 1, 1, 1));
+                viruses[Random.Range(0, viruses.Count)].GetInfected(new Virus(1, 1, 1, 1, 1));
             }
         }
     }

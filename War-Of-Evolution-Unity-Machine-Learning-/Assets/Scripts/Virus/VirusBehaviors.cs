@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using General;
+using Unity.MLAgents;
+using Unity.MLAgents.Actuators;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class VirusBehaviors : MonoBehaviour
+public class VirusBehaviors : Agent
 {
     public Virus virus;
     
@@ -33,10 +35,11 @@ public class VirusBehaviors : MonoBehaviour
         citizenBehaviors = GetComponent<CitizenBehaviors>();
         meshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
         meshRenderer.material = NormalCitizen;
-        virus = new Virus(1, 1, 1, 1);
+        virus = new Virus(1, 1, 1, 1, 1);
 
         StartCoroutine(InfectOtherCitizens());
     }
+
 
     IEnumerator InfectOtherCitizens()
     {
@@ -73,8 +76,6 @@ public class VirusBehaviors : MonoBehaviour
 
     private void Inherited(Virus virus)
     {
-        this.virus.resistance = virus.resistance * cityVirusManagement.infectionMutationMultiplier;
-        this.virus.infectionRadius = virus.infectionRadius * cityVirusManagement.infectionMutationMultiplier;
         this.virus.virulence = virus.virulence * cityVirusManagement.infectionMutationMultiplier;
     }
 
@@ -109,6 +110,7 @@ public class VirusBehaviors : MonoBehaviour
             if (virusArray[index].GetComponent<CitizenBehaviors>().citizen.isVirus == false)
             {
                 virusArray[index].GetComponent<VirusBehaviors>().GetInfected(virus);
+                AddReward(1f);
             }
             else
             {
@@ -140,15 +142,19 @@ public class VirusBehaviors : MonoBehaviour
         }
     }
 
+    public override void OnActionReceived(ActionBuffers actions)
+    {
+        Debug.Log(actions.DiscreteActions[0]);
+    }
+    
     IEnumerator Evolve()
     {
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(3f, 6f));
-            virus.resistance += 0.01f;
-            virus.virulence += 0.06f;
-            virus.infectionRadius += 0.06f;
-            virus.infectiousness += 0.06f;
+            //virus.resistance += 0.01f; yapay zeka
+            //virus.infectionRadius += 0.06f; yapay zeka
+            //virus.infectiousness += 0.06f; yapay zeka
             if(citizenBehaviors.citizen.isVirus == false) { yield break; }
         }
     }
