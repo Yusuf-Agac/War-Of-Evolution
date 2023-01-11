@@ -1330,7 +1330,6 @@ GameObject:
   - component: {fileID: 933572539479222687}
   - component: {fileID: 2433927953572311954}
   - component: {fileID: 1395964844285578512}
-  - component: {fileID: 1051067377}
   m_Layer: 10
   m_Name: Citizen
   m_TagString: Citizen
@@ -1466,7 +1465,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 12cbe02b378ff3548bb2f6ebc2dc1a77, type: 3}
   m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: VirusBehavior
@@ -1492,20 +1491,6 @@ MonoBehaviour:
   MaxStep: 0
   NormalCitizen: {fileID: 2100000, guid: b69d90b5e5c10b446a0608597c02ee1b, type: 2}
   InfectedCitizen: {fileID: 2100000, guid: 2510fe3a2f215b5498d3cedb4ecf0da5, type: 2}
---- !u!114 &1051067377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4973179059125025357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 1
-  TakeActionsBetweenDecisions: 1
 --- !u!1 &5170491806014780881
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class CityManagement : MonoBehaviour
     public float citizenEnergyPerSecond = 0.01f;
     public float citizenEnergyPrize = 0.1f;
     public bool displayCitizenGizmos = false;
+    public bool isLearning = false;
 
     private void Start()
     {

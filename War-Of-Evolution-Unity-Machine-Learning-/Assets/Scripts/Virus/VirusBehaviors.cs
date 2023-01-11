@@ -20,7 +20,7 @@ public class VirusBehaviors : Agent
     private CityManagement cityManagement;
     private CityPopulation cityPopulation;
     private CityVirusManagement cityVirusManagement;
-    private CitizenSocialDistance citizenSocialDistance;
+    private CitizenGridComponent citizenGridComponent;
 
     private GameObject DieParticlePrefab;
     
@@ -31,15 +31,21 @@ public class VirusBehaviors : Agent
         cityVirusManagement.viruses.Add(this);
         cityPopulation = FindObjectOfType<CityPopulation>();
         cityManagement = FindObjectOfType<CityManagement>();
-        citizenSocialDistance = GetComponent<CitizenSocialDistance>();
+        citizenGridComponent = GetComponent<CitizenGridComponent>();
         citizenBehaviors = GetComponent<CitizenBehaviors>();
         meshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
         meshRenderer.material = NormalCitizen;
         virus = new Virus(1, 1, 1, 1, 1);
 
         StartCoroutine(InfectOtherCitizens());
+        StartCoroutine(Die());
     }
 
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(3);
+        GetDead();
+    }
 
     IEnumerator InfectOtherCitizens()
     {
@@ -99,6 +105,7 @@ public class VirusBehaviors : Agent
         cityPopulation.Citizens.Remove(gameObject);
         cityVirusManagement.viruses.Remove(this);
         cityPopulation.IncreaseDead();
+        citizenGridComponent.RemovePenalty();
         Instantiate(DieParticlePrefab, null).transform.position = transform.position;
         Destroy(gameObject);
     }
@@ -109,8 +116,15 @@ public class VirusBehaviors : Agent
         {
             if (virusArray[index].GetComponent<CitizenBehaviors>().citizen.isVirus == false)
             {
-                virusArray[index].GetComponent<VirusBehaviors>().GetInfected(virus);
-                AddReward(1f);
+                if (!cityManagement.isLearning)
+                {
+                    virusArray[index].GetComponent<VirusBehaviors>().GetInfected(virus);
+                }
+                else
+                {
+                    virusArray[index].GetComponent<VirusBehaviors>().GetInfected(new Virus(1,1,1,1,1));
+                }
+                AddReward(10f);
             }
             else
             {
@@ -142,9 +156,22 @@ public class VirusBehaviors : Agent
         }
     }
 
+    private int Decision = -1;
     public override void OnActionReceived(ActionBuffers actions)
     {
-        Debug.Log(actions.DiscreteActions[0]);
+        Decision = actions.DiscreteActions[0];
+        switch (Decision)
+        {
+            case 0:
+                Debug.Log("Resistance");
+                break;
+            case 1:
+                Debug.Log("Infection Radius");
+                break;
+            case 2:
+                Debug.Log("Infectiousness");
+                break;
+        }
     }
     
     IEnumerator Evolve()
@@ -152,9 +179,21 @@ public class VirusBehaviors : Agent
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(3f, 6f));
-            //virus.resistance += 0.01f; yapay zeka
-            //virus.infectionRadius += 0.06f; yapay zeka
-            //virus.infectiousness += 0.06f; yapay zeka
+            RequestDecision();
+            Academy.Instance.EnvironmentStep();
+            switch (Decision)
+            {
+                case 0:
+                    virus.resistance += 0.00015f;
+                    AddReward(-30f);
+                    break;
+                case 1:
+                    virus.infectionRadius += 0.50f;
+                    break;
+                case 2:
+                    virus.infectiousness += 0.15f;
+                    break;
+            }
             if(citizenBehaviors.citizen.isVirus == false) { yield break; }
         }
     }
