@@ -10,8 +10,8 @@ public class  Node : Heap<Node>.IHeapItem
     public int gridX, gridY;
     
     public bool walkable;
-    public bool isEmpty;
-    
+    public List<GameObject> objectsOnNode;
+
     public float gCost;
     public float hCost;
     public float penalty;
@@ -20,9 +20,9 @@ public class  Node : Heap<Node>.IHeapItem
     
     public Node(Vector3 worldPosition, bool walkable, int gridX, int gridY, float penalty)
     {
+        objectsOnNode = new List<GameObject>();
         this.worldPosition = worldPosition;
         this.walkable = walkable;
-        this.isEmpty = true;
         this.gridX = gridX;
         this.gridY = gridY;
         this.penalty = penalty;

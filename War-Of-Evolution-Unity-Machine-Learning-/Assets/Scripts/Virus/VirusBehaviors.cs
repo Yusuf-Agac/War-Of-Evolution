@@ -38,13 +38,6 @@ public class VirusBehaviors : Agent
         virus = new Virus(1, 1, 1, 1, 1);
 
         StartCoroutine(InfectOtherCitizens());
-        StartCoroutine(Die());
-    }
-
-    IEnumerator Die()
-    {
-        yield return new WaitForSeconds(3);
-        GetDead();
     }
 
     IEnumerator InfectOtherCitizens()

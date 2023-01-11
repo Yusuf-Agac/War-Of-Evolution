@@ -9,8 +9,10 @@ public class CitizenGridComponent : MonoBehaviour
     private GridForPathFinding gridForPathFinding;
     private Node temporaryNode;
     private Node citizensNode;
+    private Node dieNode;
     public bool isAddedNow = false;
-    public bool isAddedTemp = false;
+    public bool isRemovedTemp = false;
+    public int counter = 0;
     
 
     private void Start()
@@ -21,66 +23,72 @@ public class CitizenGridComponent : MonoBehaviour
     private void Update()
     {
         citizensNode = gridForPathFinding.NodeFromWorldPosition(transform.position);
-        if(citizensNode.isEmpty){isAddedNow = false;}
+        if(!citizensNode.objectsOnNode.Contains(gameObject)){isAddedNow = false;}
         if (temporaryNode != null && !temporaryNode.Equals(citizensNode))
         {
-            if (!temporaryNode.isEmpty && isAddedTemp)
+            if (temporaryNode.objectsOnNode.Contains(gameObject) && isRemovedTemp)
             {
                 RemovePenaltyFromTemporary();
             }
-            temporaryNode.isEmpty = true;
         }
 
-        if (citizensNode.isEmpty && !isAddedNow)
+        if (!citizensNode.objectsOnNode.Contains(gameObject) && !isAddedNow)
         {
             AddPenaltyNow();
         }
-        citizensNode.isEmpty = false;
         temporaryNode = citizensNode;
-        isAddedTemp = isAddedNow;
+        isRemovedTemp = isAddedNow;
     }
 
     public void AddPenaltyNow()
     {
-        citizensNode.penalty += 400;
-        List<Node> nodes = gridForPathFinding.GetNeighboursOfNode(citizensNode);
-        foreach (var node in nodes)
+        if (!isAddedNow && !citizensNode.objectsOnNode.Contains(gameObject))
         {
-            node.penalty += 125;
-        }
-        isAddedNow = true;
-    }
-
-    public void RemovePenaltyFromNow()
-    {
-        if (isAddedNow)
-        {
-            citizensNode.penalty -= 400;
+            counter++;
+            citizensNode.penalty += 400;
+            dieNode = citizensNode;
             List<Node> nodes = gridForPathFinding.GetNeighboursOfNode(citizensNode);
             foreach (var node in nodes)
             {
-                node.penalty -= 125;
+                node.penalty += 125;
             }
-            isAddedNow = false;
+            isAddedNow = true;
+            citizensNode.objectsOnNode.Add(gameObject);
         }
     }
 
     public void RemovePenaltyFromTemporary()
     {
-        if (isAddedTemp)
+        if (isRemovedTemp && temporaryNode.objectsOnNode.Contains(gameObject))
         {
+            counter--;
             temporaryNode.penalty -= 400;
             List<Node> nodes = gridForPathFinding.GetNeighboursOfNode(temporaryNode);
             foreach (var node in nodes)
             {
                 node.penalty -= 125;
             }
-            isAddedTemp = false;
+            isRemovedTemp = false;
+            temporaryNode.objectsOnNode.Remove(gameObject);
         }
     }
-    
+
+    public void RemovePenaltyWhenDie()
+    {
+        if (dieNode.objectsOnNode.Contains(gameObject))
+        {
+            dieNode.penalty -= 400;
+            List<Node> nodes = gridForPathFinding.GetNeighboursOfNode(dieNode);
+            foreach (var node in nodes)
+            {
+                node.penalty -= 125;
+            }
+
+            dieNode.objectsOnNode.Remove(gameObject);
+        }
+    }
     public void RemovePenalty()
     {
-        RemovePenaltyFromNow();
+        RemovePenaltyWhenDie();
     }
 }
