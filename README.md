@@ -1,4 +1,4 @@
-# War-Of-Evolution-Unity-Machine-Learning
+# War-Of-Evolution-Unity
 
 About Project: https://drive.google.com/file/d/1PRXsCv5k5pKN9wSFetskYe3ILw6cRsFv/view?usp=sharing
 
